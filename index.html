@@ -187,8 +187,10 @@
     margin-inline: -20px; padding-inline: 20px;
   }
   .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .8rem; }
-  .logo { font-family: var(--f-display); font-size: 1.5rem; text-decoration: none; display: flex; align-items: baseline; gap: .5rem; }
-  .logo small { font: 400 .72rem/1 var(--f-mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+  /* Логотип в две строки: название крупно, под ним — чем занимается студия */
+  .logo { text-decoration: none; display: grid; gap: .2rem; }
+  .logo-name { font: 400 1.6rem/1 var(--f-display); color: var(--accent); }
+  .logo small { font: 500 .8rem/1.1 var(--f-body); color: var(--muted); }
   .nav { display: flex; gap: 1.5rem; }
   .nav a { text-decoration: none; color: var(--muted); font-size: .95rem; }
   .nav a:hover { color: var(--ink); }
@@ -610,7 +612,7 @@
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#top">Слива <small>маникюр · педикюр</small></a>
+    <a class="logo" href="#top"><span class="logo-name">Слива</span> <small>студия маникюра и педикюра</small></a>
     <nav class="nav" aria-label="Разделы">
       <a href="#palette">Палитра</a>
       <a href="#prices">Цены</a>
@@ -628,7 +630,7 @@
   <!-- Первый экран -->
   <div class="hero" id="hero">
     <div class="hero-text">
-      <p class="eyebrow">Студия маникюра · ул. Садовая, 12</p>
+      <p class="eyebrow">ул. Садовая, 12</p>
       <h1>Покрытие, которое держится <em>до&nbsp;следующей записи</em></h1>
       <p class="lead">Гель-лак носится 3–4 недели без сколов и отслоек. Если скол появится в первые 7 дней, исправим бесплатно.</p>
       <div class="hero-actions">
