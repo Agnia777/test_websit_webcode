@@ -121,19 +121,62 @@
     display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
     font: 600 1rem/1 var(--f-body); text-decoration: none; cursor: pointer;
     padding: .95rem 1.4rem; border-radius: 999px; border: 1.5px solid transparent;
-    transition: transform .15s ease, background-color .2s ease;
+    transition: transform .15s ease, background-color .2s ease, box-shadow .35s ease, border-color .2s ease;
+    position: relative; overflow: hidden; isolation: isolate;
   }
-  .btn-primary { background: var(--accent); color: var(--accent-ink); position: relative; overflow: hidden; isolation: isolate; }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
   .btn-primary::after {
     content: ""; position: absolute; inset: 0; z-index: -1;
     background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%);
     transform: translateX(-110%); transition: transform .6s ease;
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -12px var(--accent); }
+  /* Свечение: цвет берётся из акцента и выбранного оттенка лака (--polish),
+     поэтому после выбора «Шалфея» кнопки светятся зеленоватым */
+  .btn-primary:hover, .btn-primary:focus-visible {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
+      0 12px 30px -10px color-mix(in srgb, var(--polish) 75%, transparent),
+      0 0 34px -2px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
   .btn-primary:hover::after { transform: translateX(110%); }
   .btn-primary:active { transform: translateY(0) scale(.98); }
-  .btn-ghost { border-color: var(--line); color: var(--ink); background: transparent; }
-  .btn-ghost:hover { border-color: var(--ink); }
+  /* Вторая кнопка: светлая заливка цвета акцента, акцентная рамка и текст —
+     заметная, но всё равно спокойнее главной «Записаться» */
+  .btn-ghost {
+    border-color: color-mix(in srgb, var(--accent) 80%, transparent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 20%, var(--glass));
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 18px -12px color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+  .btn-ghost:hover, .btn-ghost:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 30%, var(--glass));
+    box-shadow: 0 0 28px -4px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  .btn-ghost:active { transform: translateY(0) scale(.98); }
+
+  /* Пульс-волна — только у главной кнопки первого экрана, чтобы не рябило */
+  .btn-pulse { animation: pulseRing 2.8s ease-out 1.6s infinite; }
+  .btn-pulse:hover, .btn-pulse:focus-visible { animation: none; }
+  @keyframes pulseRing {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent), 0 0 22px -6px color-mix(in srgb, var(--accent) 50%, transparent); }
+    70%  { box-shadow: 0 0 0 16px color-mix(in srgb, var(--accent) 0%, transparent), 0 0 30px -4px color-mix(in srgb, var(--accent) 35%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent), 0 0 22px -6px color-mix(in srgb, var(--accent) 50%, transparent); }
+  }
+
+  /* Волна от точки нажатия: круг создаёт script.js (функция addRipple) */
+  .ripple {
+    position: absolute; z-index: -1; pointer-events: none; border-radius: 50%;
+    width: var(--d); height: var(--d); left: var(--x); top: var(--y);
+    margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+    background: radial-gradient(circle, currentColor 0 45%, transparent 71%);
+    opacity: .4; transform: scale(0);
+    animation: ripple .65s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  @keyframes ripple { to { transform: scale(1); opacity: 0; } }
 
   /* ---------- Шапка ---------- */
   .top {
@@ -321,7 +364,10 @@
   .shape {
     font: 500 .88rem/1 var(--f-body); color: var(--muted); cursor: pointer;
     background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: .55rem .9rem;
+    position: relative; overflow: hidden; isolation: isolate;
+    transition: box-shadow .35s ease, border-color .2s ease, background-color .2s ease;
   }
+  .shape:hover { border-color: var(--accent); box-shadow: 0 0 18px -6px color-mix(in srgb, var(--accent) 60%, transparent); }
   .shape[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .palette-note { text-align: center; font-size: .86rem; color: var(--muted); }
 
@@ -414,9 +460,13 @@
   .t-btn {
     width: 3rem; height: 3rem; border-radius: 50%; border: 0; cursor: pointer;
     background: var(--ink); color: var(--bg); display: grid; place-items: center;
-    transition: transform .2s ease, background-color .2s ease;
+    transition: transform .2s ease, background-color .2s ease, box-shadow .35s ease;
+    position: relative; overflow: hidden; isolation: isolate;
   }
-  .t-btn:hover { background: var(--accent); color: var(--accent-ink); }
+  .t-btn:hover, .t-btn:focus-visible {
+    background: var(--accent); color: var(--accent-ink);
+    box-shadow: 0 0 28px -4px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
   .t-btn:active { transform: scale(.92); }
   .t-btn svg { width: 1.3rem; height: 1.3rem; transition: transform .3s cubic-bezier(.2,.8,.2,1.4); }
   .t-prev:hover svg { transform: translateX(-3px) rotate(-12deg); }
@@ -582,7 +632,7 @@
       <h1>Покрытие, которое держится <em>до&nbsp;следующей записи</em></h1>
       <p class="lead">Гель-лак носится 3–4 недели без сколов и отслоек. Если скол появится в первые 7 дней, исправим бесплатно.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#book">Записаться онлайн</a>
+        <a class="btn btn-primary btn-pulse" href="#book">Записаться онлайн</a>
         <a class="btn btn-ghost" href="#prices">Смотреть цены</a>
       </div>
       <div class="facts">

@@ -420,4 +420,33 @@ form.addEventListener('submit', e => {
   }
 });
 
+/* ================= Волна при нажатии =================
+   Круг расходится от точки, куда нажали. Один обработчик на всю страницу —
+   работает и для кнопок, которые скрипт создаёт позже. */
+const RIPPLE_TARGETS = '.btn, .t-btn, .shape';
+
+function addRipple(e) {
+  const btn = e.target.closest(RIPPLE_TARGETS);
+  if (!btn || reduceMotion) return;
+  try {
+    const r = btn.getBoundingClientRect();
+    // С клавиатуры (Enter/пробел) координат нет — волна идёт из центра
+    const x = e.clientX ? e.clientX - r.left : r.width / 2;
+    const y = e.clientY ? e.clientY - r.top : r.height / 2;
+    const d = Math.hypot(Math.max(x, r.width - x), Math.max(y, r.height - y)) * 2;
+    const wave = document.createElement('span');
+    wave.className = 'ripple';
+    wave.style.setProperty('--x', x + 'px');
+    wave.style.setProperty('--y', y + 'px');
+    wave.style.setProperty('--d', d + 'px');
+    btn.append(wave);
+    wave.addEventListener('animationend', () => wave.remove(), { once: true });
+    setTimeout(() => wave.remove(), 1000); // страховка, если анимация не запустилась
+  } catch (err) {
+    Logger.error('ripple.failed', err, { fn: 'addRipple', target: btn.className });
+  }
+}
+document.addEventListener('pointerdown', addRipple);
+document.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') addRipple(e); });
+
 Logger.info('page.loaded', { fn: 'init', shades: SHADES.length });
