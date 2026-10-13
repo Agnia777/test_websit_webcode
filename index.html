@@ -188,6 +188,13 @@
   }
   @keyframes ripple { to { transform: scale(1); opacity: 0; } }
 
+  /* ---------- Полоска «демо-сайт» ---------- */
+  .demo-bar {
+    margin-inline: -20px; padding: .5rem 20px;
+    background: var(--accent); color: var(--accent-ink);
+    text-align: center; font: 500 .85rem/1.35 var(--f-body);
+  }
+
   /* ---------- Шапка ---------- */
   .top {
     position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
@@ -620,6 +627,8 @@
 
 <!-- Фон всего сайта «Floral Veil»: цветочное поле из 4 цветов с мягким размытием -->
 <div class="veil" aria-hidden="true"></div>
+
+<div class="demo-bar" role="note">Демо-сайт для портфолио. Название, цены, отзывы и контакты вымышлены.</div>
 
 <header class="top">
   <div class="wrap">
