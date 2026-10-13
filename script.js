@@ -406,7 +406,7 @@ form.addEventListener('submit', e => {
     body.textContent = `${data.name.trim()}, ${data.service.toLowerCase()} — ${niceDate}, ${data.time}.`;
     const demo = document.createElement('p');
     demo.className = 'demo';
-    demo.textContent = 'Демо-версия: отправка заявок в студию пока не подключена.';
+    demo.textContent = 'Демо-сайт: отправка заявок в студию пока не подключена.';
     result.append(title, body, demo);
     result.hidden = false;
 
