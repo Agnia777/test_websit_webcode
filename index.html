@@ -418,6 +418,49 @@
   .clean-item b { color: var(--ink); font-weight: 600; display: block; }
   @media (max-width: 760px) { .clean { grid-template-columns: 1fr; } .clean-item { grid-template-columns: 1fr; gap: .25rem; } }
 
+  /* Фото стерильного инструмента в блоке «Чистота»: широкая полоса под списком */
+  .clean-fig { grid-column: 1 / -1; position: relative; margin: 0; border-radius: 20px; overflow: hidden; aspect-ratio: 21 / 8; background: var(--surface-2); }
+  .clean-fig img { width: 100%; height: 100%; object-fit: cover; object-position: right center; display: block; }
+  .clean-fig figcaption {
+    position: absolute; left: .85rem; top: .85rem; max-width: calc(100% - 1.7rem);
+    padding: .4rem .85rem; border-radius: 999px; background: var(--glass); border: 1px solid var(--glass-edge);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    font: 400 .82rem/1.35 var(--f-mono); color: var(--ink);
+  }
+  @media (max-width: 760px) {
+    /* на телефоне подпись уходит под фото, чтобы не закрывать инструмент */
+    .clean-fig { aspect-ratio: auto; }
+    .clean-fig img { height: auto; aspect-ratio: 4 / 3; }
+    .clean-fig figcaption { position: static; max-width: none; border: 0; border-radius: 0; background: var(--surface-2); backdrop-filter: none; -webkit-backdrop-filter: none; padding: .7rem 1rem; }
+  }
+
+  /* ---------- Работы ---------- */
+  /* 5 работ без одиноких карточек: первая крупная (2×2), остальные четыре вокруг; на телефоне крупная сверху, четыре по две */
+  .works { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+  .work { position: relative; margin: 0; border-radius: 20px; overflow: hidden; aspect-ratio: 3 / 4; background: var(--surface-2); transition: transform .45s cubic-bezier(.2,.8,.2,1.2), box-shadow .45s ease; }
+  .work-lead { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+  .work img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .work figcaption {
+    position: absolute; left: .75rem; top: .75rem; right: .75rem; display: grid; gap: .1rem; justify-items: start;
+  }
+  .work figcaption b, .work figcaption span {
+    padding: .3rem .75rem; background: var(--glass); border: 1px solid var(--glass-edge);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .work figcaption b { font: 400 1.05rem/1.2 var(--f-display); color: var(--ink); border-radius: 999px 999px 999px 8px; }
+  .work figcaption span { font: 400 .78rem/1.35 var(--f-mono); color: var(--muted); border-radius: 8px 999px 999px 999px; }
+  @media (hover: hover) and (pointer: fine) {
+    .work:hover { transform: translateY(-6px) rotate(-1deg); box-shadow: 0 24px 40px -24px rgba(60,15,40,.6); }
+    .work:hover img { transform: scale(1.04); }
+  }
+  @media (max-width: 760px) {
+    .works { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .work-lead { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 3 / 4; }
+    .work figcaption b { font-size: .98rem; }
+    /* на узких карточках оставляем только название: подпись с техникой закрывала бы руку */
+    .work:not(.work-lead) figcaption span { display: none; }
+  }
+
   /* ---------- Мастера ---------- */
   /* 4 мастера: 4 в ряд, на планшете 2×2, на телефоне по одному — без одиноких карточек */
   .masters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
@@ -593,6 +636,11 @@
     }
     @keyframes reveal { from { opacity: .2; transform: translateY(48px) scale(.97); } }
     @keyframes draw { from { background-size: 0% 2px; } }
+    .work, .clean-fig {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
   }
 
   /* Подтверждение заявки: галочка прорисовывается */
@@ -635,6 +683,7 @@
     <a class="logo" href="#top"><span class="logo-name">Слива</span> <small>студия маникюра и педикюра</small></a>
     <nav class="nav" aria-label="Разделы">
       <a href="#palette">Палитра</a>
+      <a href="#works">Работы</a>
       <a href="#prices">Цены</a>
       <a href="#visit">Как проходит</a>
       <a href="#clean">Чистота</a>
@@ -708,6 +757,37 @@
     </div>
   </section>
 
+  <!-- Примеры работ -->
+  <section id="works">
+    <div class="sec-head">
+      <p class="eyebrow">Работы</p>
+      <h2>Примеры работ</h2>
+      <p class="lead">Пять сочетаний формы и покрытия из студии: от нюда до дизайна. Цены на любую из них – в прайсе ниже.</p>
+    </div>
+    <div class="works">
+      <figure class="work work-lead">
+        <img src="photos/work-nude.webp" alt="Короткий миндаль, нюдовый гель-лак" width="900" height="1200" loading="lazy">
+        <figcaption><b>Нюд</b><span>короткий миндаль · гель-лак, укрепление</span></figcaption>
+      </figure>
+      <figure class="work">
+        <img src="photos/work-red.webp" alt="Короткий овал, классический красный гель-лак" width="900" height="1200" loading="lazy">
+        <figcaption><b>Красный</b><span>короткий овал · гель-лак</span></figcaption>
+      </figure>
+      <figure class="work">
+        <img src="photos/work-french.webp" alt="Средний миндаль, классический френч" width="900" height="1200" loading="lazy">
+        <figcaption><b>Френч</b><span>средний миндаль · гель-лак</span></figcaption>
+      </figure>
+      <figure class="work">
+        <img src="photos/work-milk.webp" alt="Короткий квадрат, молочное покрытие" width="900" height="1200" loading="lazy">
+        <figcaption><b>Молочный</b><span>короткий квадрат · комбинированный маникюр</span></figcaption>
+      </figure>
+      <figure class="work">
+        <img src="photos/work-sage.webp" alt="Средний миндаль, матовый шалфей с тонкой терракотовой линией" width="900" height="1200" loading="lazy">
+        <figcaption><b>Дизайн</b><span>матовый шалфей · ручная роспись</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- Цены -->
   <section id="prices">
     <div class="sec-head">
@@ -766,6 +846,10 @@
         <div class="clean-item"><span class="clean-num">180 °C</span><p><b>Сухожар, 60 минут</b>Стерилизация в запечатанном крафт-пакете с индикатором, который меняет цвет.</p></div>
         <div class="clean-item"><span class="clean-num">1 раз</span><p><b>Одноразовые пилки и бафы</b>Их отдаём вам после процедуры или утилизируем.</p></div>
       </div>
+      <figure class="clean-fig">
+        <img src="photos/tools-kraft.webp" alt="Рабочее место: инструменты в запечатанных крафт-пакетах, одноразовая пилка и баф" width="1600" height="900" loading="lazy">
+        <figcaption>Инструмент в запечатанном крафт-пакете: вскрываем при вас</figcaption>
+      </figure>
     </div>
   </section>
 
